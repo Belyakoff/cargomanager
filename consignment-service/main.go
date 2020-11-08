@@ -6,9 +6,9 @@ import (
 	"fmt"
 
 	// Import the generated protobuf code
-	pb "github.com/Belyakoff/cargomanager/tree/master/consignment-service/proto/consignment"
+	pb "github.com/Belyakoff/cargomanager/consignment-service/proto/consignment"
 	vesselProto "github.com/Belyakoff/cargomanager/vessel-service/proto/vessel"
-	micro "github.com/micro/go-micro"
+	micro "github.com/micro/go-micro/v2"
 	"golang.org/x/net/context"
 	
 )

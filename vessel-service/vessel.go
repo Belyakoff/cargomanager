@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	pb "github.com/Belyakoff/cargomanager/vessel-service/proto/vessel"
-	"github.com/micro/go-micro"
+	"github.com/micro/go-micro/v2"
 )
 
 type Repository interface {
