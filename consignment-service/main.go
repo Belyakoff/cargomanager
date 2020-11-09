@@ -2,7 +2,7 @@ package main
 
 import (
 	"log"
-	"net"
+	
 	"fmt"
 
 	// Import the generated protobuf code
@@ -40,7 +40,7 @@ func (repo *ConsignmentRepository) GetAll() []*pb.Consignment {
 // to give you a better idea.
 type service struct {
 	repo IRepository
-	vesselClient vesselProto.VesselServiceClient
+	vesselClient vesselProto.VesselService
 }
 
 // CreateConsignment - we created just one method on our service,
@@ -63,7 +63,7 @@ func (s *service) CreateConsignment(ctx context.Context, req *pb.Consignment, re
 	// Save our consignment
 	consignment, err := s.repo.Create(req)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	res.Created = true
@@ -87,11 +87,15 @@ func main() {
 		micro.Version("latest"),
 	)
 
-	vesselClient := vesselProto.NewVesselServiceClient("go.micro.srv.vessel", srv.Client())
+	vesselClient := vesselProto.NewVesselService("go.micro.srv.vessel", srv.Client())
 
 	srv.Init()
 
-	pb.RegisterShippingServiceHandler(srv.Server(), &service{repo, vesselClient})
+
+	// Register our implementation with
+	if err := pb.RegisterShippingServiceHandler(srv.Server(), &service{repo, vesselClient}); err != nil {
+		log.Panic(err)
+	}
 
 	if err := srv.Run(); err != nil {
 		fmt.Println(err)
